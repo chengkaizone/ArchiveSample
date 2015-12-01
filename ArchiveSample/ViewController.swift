@@ -47,6 +47,8 @@ class ViewController: UIViewController {
             
             print("\(baseObj.age)");
         }
+        
+        
 //        obj.age = 27;
 //        obj.name = "One";
 //        obj.person?.classId = 5;
