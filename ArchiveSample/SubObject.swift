@@ -42,7 +42,7 @@ class SubObject: BaseObject {
         self.rect = aDecoder.decodeCGRectForKey("rect");
         self.person = aDecoder.decodeObjectForKey("person") as? Person;
         
-        super.init();
+        super.init(coder: aDecoder);
     }
     
     // NSCoding 协议
