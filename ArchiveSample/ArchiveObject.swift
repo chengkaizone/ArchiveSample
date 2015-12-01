@@ -21,7 +21,12 @@ class ArchiveObject: NSObject, NSCopying {
         let obj = ArchiveObject();
         
         //self.dataArray.unshare();
-        obj.dataArray = self.dataArray;
+        obj.dataArray = [BaseObject]();
+        
+        for tmp:BaseObject in self.dataArray {
+            
+            obj.dataArray.append(tmp.copy() as! BaseObject);
+        }
         
         return obj;
     }
