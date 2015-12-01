@@ -8,7 +8,8 @@
 
 import UIKit
 
-class Person: NSObject, NSCopying {
+/** 模拟引用类型 */
+class Person: NSObject, NSCopying, NSCoding {
     
     var classId:Int;
     var className:String;
@@ -29,6 +30,19 @@ class Person: NSObject, NSCopying {
         let person = Person(classId: self.classId, className: self.className);
         
         return person;
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        
+        aCoder.encodeInt(Int32(self.classId), forKey: "classId");
+        aCoder.encodeObject(self.className, forKey: "className");
+    }
+    
+    // NS_DESIGNATED_INITIALIZER
+    required init?(coder aDecoder: NSCoder) {
+        
+        self.classId = Int(aDecoder.decodeIntForKey("classId"));
+        self.className = aDecoder.decodeObjectForKey("className") as! String;
     }
     
 }

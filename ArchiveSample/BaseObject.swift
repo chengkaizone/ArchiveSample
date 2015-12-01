@@ -46,16 +46,19 @@ class BaseObject: NSObject, NSCopying, NSCoding {
     // NSCoding 协议
     func encodeWithCoder(aCoder: NSCoder) {
         
+        aCoder.encodeInt(Int32(self.age), forKey: "age");
+        aCoder.encodeObject(self.name, forKey: "name");
+        
     }
     
     // NS_DESIGNATED_INITIALIZER
     required init?(coder aDecoder: NSCoder) {
         
         self.age = Int(aDecoder.decodeIntForKey("age"));
-        self.name = "";
         
+        // Swift中没有对String归档的直接支持,需要转NSString
+        self.name = aDecoder.decodeObjectForKey("name") as! String;
         
-        //self.name = aDecoder.decode
     }
     
 }

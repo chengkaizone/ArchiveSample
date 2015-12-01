@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SubObjectOne: BaseObject {
+class SubObject: BaseObject {
     
     var rect:CGRect;
     
@@ -25,7 +25,7 @@ class SubObjectOne: BaseObject {
         super.init();
         
         self.age = 10;
-        self.name = "SubObjectOne";
+        self.name = "SubObject";
     }
     
     init(rect:CGRect, person:Person) {
@@ -34,16 +34,29 @@ class SubObjectOne: BaseObject {
         super.init();
         
         self.age = 10;
-        self.name = "SubObjectOne";
+        self.name = "SubObject";
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        
+        self.rect = aDecoder.decodeCGRectForKey("rect");
+        self.person = aDecoder.decodeObjectForKey("person") as? Person;
+        
+        super.init();
+    }
+    
+    // NSCoding 协议
+    override func encodeWithCoder(aCoder: NSCoder) {
+        
+        aCoder.encodeCGRect(self.rect, forKey: "rect");
+        aCoder.encodeObject(self.person, forKey: "person");
+        
+        super.encodeWithCoder(aCoder);
     }
     
     override func copyObject(obj:BaseObject) {
         
-        let tmpObj = obj as! SubObjectOne;
+        let tmpObj = obj as! SubObject;
         
         tmpObj.rect = self.rect;
         tmpObj.person = self.person?.copy() as? Person;
