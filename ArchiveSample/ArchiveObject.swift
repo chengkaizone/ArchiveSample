@@ -12,6 +12,10 @@ class ArchiveObject: NSObject, NSCopying, NSCoding {
     
     var dataArray:[BaseObject];
     
+    var isDraft:Bool = true;
+    
+    var draftId:Int64 = 0;
+    
     override init() {
         dataArray = [BaseObject]();
     }
@@ -34,12 +38,18 @@ class ArchiveObject: NSObject, NSCopying, NSCoding {
     func encodeWithCoder(aCoder: NSCoder) {
         
         aCoder.encodeObject(self.dataArray, forKey: "dataArray");
+        
+        aCoder.encodeBool(self.isDraft, forKey: "isDraft");
+        aCoder.encodeInt64(self.draftId, forKey: "draftId");
     }
     
     // NS_DESIGNATED_INITIALIZER
     required init?(coder aDecoder: NSCoder) {
         
         self.dataArray = aDecoder.decodeObjectForKey("dataArray") as! Array;
+        
+        self.isDraft = aDecoder.decodeBoolForKey("isDraft");
+        self.draftId = aDecoder.decodeInt64ForKey("draftId");
     }
     
     // 归档到本地,并返回归档的路径

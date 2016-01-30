@@ -55,6 +55,7 @@ class SubObject: BaseObject {
     }
     
     override func copyObject(obj:BaseObject) {
+        super.copyObject(obj)
         
         let tmpObj = obj as! SubObject;
         

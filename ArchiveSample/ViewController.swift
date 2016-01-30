@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreMedia
 
 /** 验证 NSCopying, NSCoding协议 */
 class ViewController: UIViewController {
@@ -14,11 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //validateCopying();
-        
-        validateCoding();
-        
+        validateCopying();
+
     }
 
     // 验证复杂对象归档及恢复对象
@@ -60,9 +58,13 @@ class ViewController: UIViewController {
         let archive = ArchiveObject();
         let obj = SubObject(rect: CGRectMake(0, 0, 20, 20), person: Person(classId: 3, className: "haha"));
         let otherObj = obj.copy() as! SubObject;
+        let sub2Obj = Sub2Object(sexName: "呵呵")
+        let otherSub2Obj = sub2Obj.copy() as! Sub2Object
         
         archive.dataArray.append(obj);
         archive.dataArray.append(otherObj);
+        archive.dataArray.append(sub2Obj);
+        archive.dataArray.append(otherSub2Obj);
         
         let otherArchive = archive.copy() as! ArchiveObject;
         
