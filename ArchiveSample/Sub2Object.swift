@@ -27,21 +27,21 @@ class Sub2Object: SubObject {
     
     required init?(coder aDecoder: NSCoder) {
         
-        self.sexName = aDecoder.decodeObjectForKey("sexName") as! String;
+        self.sexName = aDecoder.decodeObject(forKey: "sexName") as! String;
         
         super.init(coder: aDecoder);
     }
     
     // NSCoding 协议
-    override func encodeWithCoder(aCoder: NSCoder) {
+    override func encode(with aCoder: NSCoder) {
         
-        aCoder.encodeObject(self.sexName, forKey: "sexName");
+        aCoder.encode(self.sexName, forKey: "sexName");
         
-        super.encodeWithCoder(aCoder);
+        super.encode(with: aCoder);
     }
     
     override func copyObject(obj:BaseObject) {
-        super.copyObject(obj)
+        super.copyObject(obj: obj)
         
         let tmpObj = obj as! Sub2Object;
         

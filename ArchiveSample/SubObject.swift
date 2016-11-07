@@ -7,15 +7,20 @@
 //
 
 import UIKit
+import AVFoundation
 
 class SubObject: BaseObject {
     
     var rect:CGRect;
     
+    var time:CMTime!
+    
     var person:Person?;
     
     required init() {
-        self.rect = CGRectZero;
+        
+        self.rect = CGRect.zero;
+        self.time = CMTimeMake(30, 30)
         super.init();
     }
     
@@ -39,23 +44,25 @@ class SubObject: BaseObject {
 
     required init?(coder aDecoder: NSCoder) {
         
-        self.rect = aDecoder.decodeCGRectForKey("rect");
-        self.person = aDecoder.decodeObjectForKey("person") as? Person;
+        self.rect = aDecoder.decodeCGRect(forKey: "rect")
+        self.person = aDecoder.decodeObject(forKey: "person") as? Person;
+        //self.time = aDecoder.decodeTime(forKey: "time")
         
         super.init(coder: aDecoder);
     }
     
     // NSCoding 协议
-    override func encodeWithCoder(aCoder: NSCoder) {
+    override func encode(with aCoder: NSCoder) {
         
-        aCoder.encodeCGRect(self.rect, forKey: "rect");
-        aCoder.encodeObject(self.person, forKey: "person");
+        aCoder.encode(self.rect, forKey: "rect");
+        aCoder.encode(self.person, forKey: "person");
+        //aCoder.encode(self.time, forKey: "time")
         
-        super.encodeWithCoder(aCoder);
+        super.encode(with: aCoder);
     }
     
     override func copyObject(obj:BaseObject) {
-        super.copyObject(obj)
+        super.copyObject(obj: obj)
         
         let tmpObj = obj as! SubObject;
         

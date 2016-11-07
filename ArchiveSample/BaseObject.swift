@@ -27,13 +27,12 @@ class BaseObject: NSObject, NSCopying, NSCoding {
     }
     
     // NSCopying
-    func copyWithZone(zone: NSZone) -> AnyObject {
-        
-        let obj:BaseObject = self.dynamicType.init();
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let obj:BaseObject = type(of: self).init();
         obj.age = self.age;
         obj.name = self.name;
         
-        self.copyObject(obj);
+        self.copyObject(obj: obj);
         return obj;
     }
     
@@ -44,20 +43,18 @@ class BaseObject: NSObject, NSCopying, NSCoding {
     
     
     // NSCoding 协议
-    func encodeWithCoder(aCoder: NSCoder) {
-        
-        aCoder.encodeInt(Int32(self.age), forKey: "age");
-        aCoder.encodeObject(self.name, forKey: "name");
-        
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.age, forKey: "age");
+        aCoder.encode(self.name, forKey: "name");
     }
     
     // NS_DESIGNATED_INITIALIZER
     required init?(coder aDecoder: NSCoder) {
         
-        self.age = Int(aDecoder.decodeIntForKey("age"));
+        self.age = aDecoder.decodeInteger(forKey: "age");
         
         // Swift中没有对String归档的直接支持,需要转NSString
-        self.name = aDecoder.decodeObjectForKey("name") as! String;
+        self.name = aDecoder.decodeObject(forKey: "name") as! String;
         
     }
     

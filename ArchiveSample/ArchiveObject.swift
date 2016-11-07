@@ -9,7 +9,7 @@
 import UIKit
 
 class ArchiveObject: NSObject, NSCopying, NSCoding {
-    
+
     var dataArray:[BaseObject];
     
     var isDraft:Bool = true;
@@ -20,8 +20,7 @@ class ArchiveObject: NSObject, NSCopying, NSCoding {
         dataArray = [BaseObject]();
     }
     
-    func copyWithZone(zone: NSZone) -> AnyObject {
-        
+    public func copy(with zone: NSZone? = nil) -> Any {
         let obj = ArchiveObject();
         
         //self.dataArray.unshare();
@@ -34,31 +33,32 @@ class ArchiveObject: NSObject, NSCopying, NSCoding {
         
         return obj;
     }
+
     
-    func encodeWithCoder(aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         
-        aCoder.encodeObject(self.dataArray, forKey: "dataArray");
+        aCoder.encode(self.dataArray, forKey: "dataArray");
         
-        aCoder.encodeBool(self.isDraft, forKey: "isDraft");
-        aCoder.encodeInt64(self.draftId, forKey: "draftId");
+        aCoder.encode(self.isDraft, forKey: "isDraft");
+        aCoder.encode(self.draftId, forKey: "draftId");
     }
     
     // NS_DESIGNATED_INITIALIZER
     required init?(coder aDecoder: NSCoder) {
         
-        self.dataArray = aDecoder.decodeObjectForKey("dataArray") as! Array;
+        self.dataArray = aDecoder.decodeObject(forKey: "dataArray") as! Array;
         
-        self.isDraft = aDecoder.decodeBoolForKey("isDraft");
-        self.draftId = aDecoder.decodeInt64ForKey("draftId");
+        self.isDraft = aDecoder.decodeBool(forKey: "isDraft");
+        self.draftId = aDecoder.decodeInt64(forKey: "draftId");
     }
     
     // 归档到本地,并返回归档的路径
     func saveToPath() ->String? {
         
-        let docDir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as NSString;
+        let docDir = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] as NSString;
         
         let fileName = "\(Int64(NSDate().timeIntervalSince1970)).archive";
-        let path = docDir.stringByAppendingPathComponent(fileName);
+        let path = docDir.appendingPathComponent(fileName);
         
         let result = NSKeyedArchiver.archiveRootObject(self, toFile: path);
         
@@ -72,7 +72,7 @@ class ArchiveObject: NSObject, NSCopying, NSCoding {
     // 从指定路径中恢复对象
     class func restoreFromPath(path:String) ->ArchiveObject? {
         
-        let obj = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? ArchiveObject;
+        let obj = NSKeyedUnarchiver.unarchiveObject(withFile: path) as? ArchiveObject;
         
         return obj;
     }

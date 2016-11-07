@@ -25,24 +25,23 @@ class Person: NSObject, NSCopying, NSCoding {
         self.className = className;
     }
     
-    func copyWithZone(zone: NSZone) -> AnyObject {
-    
+    public func copy(with zone: NSZone? = nil) -> Any {
         let person = Person(classId: self.classId, className: self.className);
         
         return person;
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         
-        aCoder.encodeInt(Int32(self.classId), forKey: "classId");
-        aCoder.encodeObject(self.className, forKey: "className");
+        aCoder.encode(self.classId, forKey: "classId");
+        aCoder.encode(self.className, forKey: "className");
     }
     
     // NS_DESIGNATED_INITIALIZER
     required init?(coder aDecoder: NSCoder) {
         
-        self.classId = Int(aDecoder.decodeIntForKey("classId"));
-        self.className = aDecoder.decodeObjectForKey("className") as! String;
+        self.classId = aDecoder.decodeInteger(forKey: "classId")
+        self.className = aDecoder.decodeObject(forKey: "className") as! String;
     }
     
 }
